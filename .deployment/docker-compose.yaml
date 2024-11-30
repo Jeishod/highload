@@ -1,0 +1,66 @@
+name: highload
+
+networks:
+  highload-network:
+    name: highload-network
+    driver: bridge
+
+x-logging: &formatted-logging
+  driver: json-file
+  options:
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    max-size: "10m"
+    max-file: "3"
+    mode: "non-blocking"
+    max-buffer-size: "4m"
+
+x-backend-envs: &backend-envs
+  APP_STAND: ${APP_STAND:-local}
+  APP_DEBUG: ${APP_DEBUG:-true}
+  APP_HOST: ${APP_HOST:-0.0.0.0}
+  APP_PORT: ${APP_PORT:-8000}
+  APP_PUBLIC_PATH: ${APP_PUBLIC_PATH:-}
+  APP_SECRET_KEY: ${APP_SECRET_KEY:-supersecret}
+
+x-postgres-envs: &postgres-envs
+  POSTGRES_HOST: ${POSTGRES_HOST:-highload-postgres}
+  POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+  POSTGRES_USER: ${POSTGRES_USER:-highload}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-highload-password}
+  POSTGRES_DB: ${POSTGRES_DB:-highload}
+
+services:
+
+  highload-backend:
+    container_name: highload-backend
+    image: highload-backend
+    restart: always
+    logging: *formatted-logging
+    networks: [highload-network]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${APP_HOST:-0.0.0.0}:${APP_PORT:-8000}${APP_PUBLIC_PATH:-}/api/v1/shared/healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    build:
+      context: ..
+      dockerfile: .deployment/Dockerfile
+    entrypoint: ["poe", "prod"]
+    environment:
+      <<: [
+        *backend-envs,
+        *postgres-envs,
+      ]
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.highload-backend.loadbalancer.server.port=${APP_PORT:-8000}
+      - traefik.http.services.highload-backend.loadbalancer.passhostheader=true
+
+      - traefik.http.routers.highload-backend.rule=Host(`${APP_DOMAIN:-highload.localhost}`)
+      - traefik.http.routers.highload-backend.entrypoints=http
+      - traefik.http.routers.highload-backend.middlewares=https-redirect
+
+      - traefik.http.routers.highload-backend-secure.rule=Host(`${APP_DOMAIN:-highload.localhost}`)
+      - traefik.http.routers.highload-backend-secure.entrypoints=https
+      - traefik.http.routers.highload-backend-secure.tls=true
+      - traefik.http.routers.highload-backend-secure.tls.certresolver=le

@@ -1,0 +1,38 @@
+name: highload
+
+networks:
+  highload-network:
+    name: highload-network
+    driver: bridge
+
+volumes:
+  postgres-data:
+    name: highload-postgres-data
+
+x-logging: &formatted-logging
+  driver: json-file
+  options:
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    max-size: "10m"
+    max-file: "3"
+    mode: "non-blocking"
+    max-buffer-size: "4m"
+
+services:
+  highload-postgres:
+    container_name: highload-postgres
+    image: postgres:16.2-alpine
+    restart: always
+    logging: *formatted-logging
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    networks: [highload-network]
+    healthcheck:
+      test: pg_isready --username=${POSTGRES_USER:-highload} --dbname=${POSTGRES_DB:-highload}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-highload-password}
+      POSTGRES_USER: ${POSTGRES_USER:-highload}
+      POSTGRES_DB: ${POSTGRES_DB:-highload}
+    ports: ["${POSTGRES_EXPOSED_PORT:-15432}:5432"]

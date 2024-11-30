@@ -1,0 +1,10 @@
+.idea/
+.vscode/
+.DS_Store/
+__pycache__/
+poetry.lock
+.env
+.venv/
+.mypy_cache/
+.pytest_cache/
+.temp/

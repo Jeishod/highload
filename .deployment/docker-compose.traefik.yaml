@@ -1,0 +1,83 @@
+name: highload
+
+networks:
+  highload-network:
+    name: highload-network
+    driver: bridge
+
+volumes:
+  traefik-data:
+    name: highload-traefik-data
+  acme-data:
+    name: highload-acme-data
+
+x-logging: &formatted-logging
+  driver: json-file
+  options:
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    max-size: "10m"
+    max-file: "3"
+    mode: "non-blocking"
+    max-buffer-size: "4m"
+
+services:
+  highload-traefik:
+    container_name: highload-traefik
+    image: traefik:v3.2.1
+    restart: always
+    command:
+      # ==== Provider (docker) ====
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      # ==== API (Dashboard) ====
+      - --api.dashboard=true
+      - --api.insecure=false
+      # ==== Entrypoints ====
+      - --entrypoints.http.address=:80
+      - --entrypoints.https.address=:443
+      # ==== SSL ====
+      - --certificatesresolvers.le.acme.email=${TRAEFIK_EMAIL}
+      - --certificatesresolvers.le.acme.storage=/certificates/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      # ==== Logs ====
+      - --accesslog=true
+      - --accesslog.filepath=/var/log/traefik/access.log
+      - --log
+      - --log.level=DEBUG
+      - --log.filePath=/var/log/traefik/traefik.log
+      # ==== Metrics ====
+      - --metrics.prometheus=true
+      - --ping=true
+      - --entryPoints.ping.address=:8082
+      - --ping.entryPoint=ping
+    labels:
+      - traefik.enable=true
+      # Middlewares
+      - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_BASIC_AUTH}
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
+      - traefik.http.middlewares.access-header.headers.accesscontrolallowheaders=*
+      # HTTP route
+      - traefik.http.routers.traefik-public.rule=Host(`${TRAEFIK_DOMAIN}`)
+      - traefik.http.routers.traefik-public.entrypoints=http
+      - traefik.http.routers.traefik-public.middlewares=https-redirect
+      # HTTPS route
+      - traefik.http.routers.traefik-public-secure.rule=Host(`${TRAEFIK_DOMAIN}`)
+      - traefik.http.routers.traefik-public-secure.entrypoints=https
+      - traefik.http.routers.traefik-public-secure.middlewares=traefik-auth
+      - traefik.http.routers.traefik-public-secure.service=api@internal
+      - traefik.http.routers.traefik-public-secure.tls=true
+      - traefik.http.routers.traefik-public-secure.tls.certresolver=le
+    healthcheck:
+      test: wget --quiet --tries=1 --spider  http://0.0.0.0:8082/ping || exit 1
+      interval: 5s
+      timeout: 1s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik-data:/var/log/traefik
+      - acme-data:/certificates
+    ports: ["80:80", "443:443"]
+    logging: *formatted-logging
+    networks: [highload-network]

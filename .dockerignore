@@ -1,0 +1,15 @@
+.idea/
+.vscode/
+.DS_Store/
+.temp/
+.github/
+.deployment/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+poetry.lock
+.env
+.env.example
+.venv/
+dev/
+tests/

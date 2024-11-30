@@ -1,0 +1,94 @@
+[tool.poetry]
+name = "highload"
+version = "0.1.0"
+description = ""
+authors = ["jeishod <jeishod@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.5"
+uvicorn = "^0.32.1"
+gunicorn = "^23.0.0"
+poethepoet = "^0.31.1"
+asyncpg = "^0.30.0"
+pydantic-settings = "^2.6.1"
+loguru = "^0.7.2"
+orjson = "^3.10.12"
+python-jose = "^3.3.0"
+cryptography = "^44.0.0"
+passlib = "^1.7.4"
+bcrypt = "4.0.1"
+pydantic = {extras = ["email"], version = "^2.10.2"}
+python-multipart = "^0.0.17"
+itsdangerous = "^2.2.0"
+
+[tool.poetry.group.dev.dependencies]
+# Зависимости для разработки
+black = "^24.10.0"
+isort = "^5.13.2"
+flake8-pyproject = "^1.2.3"
+pytest-asyncio = "^0.24.0"
+faker = "^33.1.0"
+factory-boy = "^3.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 120
+max-complexity = 15
+
+[tool.isort]
+profile = "black"
+line_length = 120
+lines_after_imports = 2
+
+[tool.pylint.format]
+ignore-long-lines = ['^\s*(# )?<?https?://\S+>?$']
+max-line-length = "120"
+
+[tool.pylint.messages_control]
+disable = ["C0114"]
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q -x"
+testpaths = "tests"
+python_files = ["tests_*.py", "test_*.py"]
+python_functions = ["test"]
+asyncio_mode = "auto"
+
+[tool.poe]
+envfile = [".env"]
+verbosity = 1
+
+[tool.poe.tasks.format]
+# Форматирование кода
+shell = "black app dev tests && isort app dev tests && flake8 app dev tests"
+
+[tool.poe.tasks.dev]
+# Старт сервера в дев-режиме
+cmd = "uvicorn --reload --use-colors --host 0.0.0.0 --port \"${port}\" --log-level debug 'app.main:app'"
+args = { port = { options = ["-p"], default = "8000" }}
+
+[tool.poe.tasks.prod]
+# Старт сервера в прод-режиме
+cmd = "gunicorn -c app/gunicorn_conf.py app.main:app"
+
+[tool.poe.tasks.create-db]
+# Создание базы данных
+script = "dev.create_db:main()"
+
+[tool.poe.tasks.create-tables]
+# Создание таблиц
+script = "dev.create_tables:main()"
+
+[tool.poe.tasks.load-fixtures]
+# Загрузка фикстур
+script = "dev.load_fixtures:main()"
