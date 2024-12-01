@@ -18,7 +18,8 @@ class Application(FastAPI):
         self.services = Services()
 
         super().__init__(
-            title="Gen2B | Auth Service",
+            title="HIGHLOAD | Test Service",
+            description="Testing optimizations when working with high loads",
             root_path_in_servers=True,
             docs_url="/api",
             redoc_url="/api/docs",
