@@ -29,9 +29,9 @@ class _Settings(BaseSettings):
     APP_PUBLIC_PATH: str | None = None
     APP_SECRET_KEY: str
 
-    AUTH_PASSWORD_ALGORYTHM: str
-    AUTH_LOGIN_URL: str
-    AUTH_ACCESS_TOKEN_EXPIRE: int
+    AUTH_PASSWORD_ALGORYTHM: str = "HS256"
+    AUTH_LOGIN_URL: str = "/auth/jwt/login"
+    AUTH_ACCESS_TOKEN_EXPIRE: int = 60 * 60 * 24 * 7  # 1 week
 
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
@@ -41,14 +41,6 @@ class _Settings(BaseSettings):
     POSTGRES_POOL_SIZE: int = 10
     POSTGRES_ECHO_POOL: str | bool = False
     POSTGRES_CONNECTION_RETRY_PERIOD_SECONDS: float = 5.0
-
-    POSTGRES_NAMING_CONVENTION: dict[str, str] = {
-        "ix": "ix_%(column_0_label)s",
-        "uq": "uq_%(table_name)s_%(column_0_N_name)s",
-        "ck": "ck_%(table_name)s_%(constraint_name)s",
-        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-        "pk": "pk_%(table_name)s",
-    }
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
