@@ -12,7 +12,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.get("/me", response_model=GetUserResponse)
-async def get_current_user(_current_user: Annotated[GetUserResponse, Depends(UserDepends)]):
+async def get_current_user(_current_user: Annotated[GetUserResponse, Depends(UserDepends())]):
     """Get current user."""
     return _current_user
 
