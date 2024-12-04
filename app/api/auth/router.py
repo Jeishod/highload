@@ -41,7 +41,7 @@ async def register_user(user_info: PostUserRegisterRequest):
 
 
 @router.post(
-    path="/jwt/login",
+    path="/login",
     response_model=JwtResponse,
     status_code=status.HTTP_200_OK,
 )
@@ -57,6 +57,7 @@ async def login(
     - **password** [Length from 6 to 50]: user password
 
     ### Output
+    - **id**: current user ID
     - **access_token**: JWT access token
     """
     response = await auth_manager.login(email=username.lower(), password=password)
