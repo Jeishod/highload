@@ -45,7 +45,8 @@ services:
     build:
       context: ..
       dockerfile: .deployment/Dockerfile
-    entrypoint: ["poe", "prod"]
+    volumes: ["../dev:/app/dev"]
+    entrypoint: ["poe", "start-prod"]
     environment:
       <<: [
         *backend-envs,

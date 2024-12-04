@@ -1,7 +1,9 @@
 import asyncio
 import csv
 
+import asyncpg
 from loguru import logger as LOGGER
+from tqdm import tqdm
 
 from app.logger import CustomLogger
 from app.services import Services
@@ -24,10 +26,11 @@ class FixtureManager:
         """Заполнение таблицы городов. Загрузить данные из .csv файла"""
         csv_file_path = "dev/fixtures/cities.csv"
         table_name = "cities"
+        count_rows = 322
         with open(csv_file_path, "r") as file:
             reader = csv.reader(file)
             next(reader)  # Пропускаем заголовки
-            for row in reader:
+            for row in tqdm(reader, unit="rows", total=count_rows):
 
                 query = f"""
                 INSERT INTO {table_name} (
@@ -40,19 +43,19 @@ class FixtureManager:
                 """
                 try:
                     await Services.db.execute(query)
-                    LOGGER.debug(f"Row added to table '{table_name}' ({row[1]})")
-                except Exception as e:
-                    LOGGER.error(f"Error filling table '{table_name}': {e}")
+                except asyncpg.exceptions.UniqueViolationError:
+                    pass
 
     @staticmethod
     async def fill_users_table():
         """Заполнение таблицы пользователей. Загрузить данные из .csv файла"""
         csv_file_path = "dev/fixtures/users.csv"
         table_name = "users"
+        count_rows = 100_000
         with open(csv_file_path, "r", encoding="utf-8") as file:
             reader = csv.reader(file)
             next(reader)  # Пропускаем заголовки
-            for row in reader:
+            for row in tqdm(reader, unit="rows", total=count_rows):
                 query = f"""
                 INSERT INTO {table_name} (
                     id,
@@ -76,9 +79,8 @@ class FixtureManager:
                 """
                 try:
                     await Services.db.execute(query)
-                    LOGGER.debug(f"Row added to table '{table_name}' ({row[1]})")
-                except Exception as e:
-                    LOGGER.error(f"Error filling table '{table_name}': {e}")
+                except asyncpg.exceptions.UniqueViolationError:
+                    pass
 
 
 def main():

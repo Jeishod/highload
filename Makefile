@@ -20,3 +20,11 @@ down:
 rebuild:
 	$(call load_env)
 	@docker compose -f .deployment/docker-compose.yaml up -d --build
+
+create-tables:
+	$(call load_env)
+	@docker compose -f .deployment/docker-compose.yaml exec -it highload-backend poe create-tables
+
+load-fixtures:
+	$(call load_env)
+	@docker compose -f .deployment/docker-compose.yaml exec -it highload-backend poe load-fixtures

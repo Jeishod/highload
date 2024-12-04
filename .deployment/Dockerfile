@@ -17,6 +17,9 @@ COPY pyproject.toml .
 RUN poetry config virtualenvs.create false && poetry install --no-root --without dev
 
 FROM base AS runtime
+ARG APP_RELEASE=not-set
+ENV APP_RELEASE=$APP_RELEASE \
+  PYTHONPATH="$PYTHONPATH:/usr/local/lib/python3.11/site-packages"
 RUN apt-get update && apt-get install -y curl && apt-get clean
 COPY --from=builder /usr/local /usr/local
 WORKDIR /app/
