@@ -30,7 +30,7 @@ class _Settings(BaseSettings):
     APP_SECRET_KEY: str
 
     AUTH_PASSWORD_ALGORYTHM: str = "HS256"
-    AUTH_LOGIN_URL: str = "/auth/jwt/login"
+    AUTH_LOGIN_URL: str = "/api/v1/auth/login"
     AUTH_ACCESS_TOKEN_EXPIRE: int = 60 * 60 * 24 * 7  # 1 week
 
     POSTGRES_USER: str

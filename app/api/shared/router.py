@@ -8,4 +8,5 @@ router = APIRouter(prefix="/shared", tags=["Shared"])
 
 @router.get("/healthcheck")
 async def healthcheck():
+    """Healthcheck endpoint."""
     return GetHealthcheckResponse(status="ok")
