@@ -51,7 +51,7 @@ class FixtureManager:
         """Заполнение таблицы пользователей. Загрузить данные из .csv файла"""
         csv_file_path = "dev/fixtures/users.csv"
         table_name = "users"
-        count_rows = 100_000
+        count_rows = 1_000_000
         with open(csv_file_path, "r", encoding="utf-8") as file:
             reader = csv.reader(file)
             next(reader)  # Пропускаем заголовки
