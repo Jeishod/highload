@@ -23,7 +23,8 @@ async def register_user(user_info: PostUserRegisterRequest):
 
     ### Input
     - **email** [Length from 5 to 100]: user email
-    - **name** [Length from 2 to 100]: user name
+    - **first_name** [Length from 2 to 100]: user first name
+    - **last_name** [Length from 2 to 100]: user last name
     - **password** [Length from 6 to 50]: user password
         Password must not contain email.
         It must be at least 6 alphanumeric characters or following symbols: !@#$%^&*()_+

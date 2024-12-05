@@ -74,7 +74,8 @@ class AuthManager:
         create_user_query = f"""
             INSERT INTO users (
                 email,
-                name,
+                first_name,
+                last_name,
                 password,
                 gender,
                 birth_date,
@@ -83,7 +84,8 @@ class AuthManager:
             )
             VALUES (
                 '{user_info.email}',
-                '{user_info.name}',
+                '{user_info.first_name}',
+                '{user_info.last_name}',
                 '{password_hash}',
                 '{user_info.gender}',
                 '{user_info.birth_date}',
@@ -97,7 +99,7 @@ class AuthManager:
 
     @staticmethod
     async def login(email: str, password: str) -> JwtResponse:
-        """Logic of endpoint POST `/auth/jwt/login`
+        """Logic of endpoint POST `/auth/login`
 
         Args:
             email (str): user email

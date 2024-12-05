@@ -21,7 +21,8 @@ class PostUserRegisterRequest(BaseModel):
     """
 
     email: EmailStr = Field(min_length=5, max_length=100)
-    name: str = Field(examples=["John Doe"], min_length=2, max_length=100)
+    first_name: str = Field(examples=["John"], min_length=2, max_length=100)
+    last_name: str = Field(examples=["Doe"], min_length=2, max_length=100)
     password: str = Field(examples=["password123"], min_length=6, max_length=50)
     gender: str = Field(examples=["male", "female"], min_length=4, max_length=6)
     birth_date: date | None = Field(examples=["1990-01-01"], default=None)

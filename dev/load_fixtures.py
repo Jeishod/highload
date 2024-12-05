@@ -59,7 +59,8 @@ class FixtureManager:
                 query = f"""
                 INSERT INTO {table_name} (
                     id,
-                    name,
+                    first_name,
+                    last_name,
                     email,
                     gender,
                     birth_date,
@@ -72,9 +73,10 @@ class FixtureManager:
                     '{row[2]}',
                     '{row[3]}',
                     '{row[4]}',
-                    ARRAY['{row[5]}'],
-                    '{row[6]}',
-                    '{row[7]}'
+                    '{row[5]}',
+                    ARRAY['{row[6]}'],
+                    '{row[7]}',
+                    '{row[8]}'
                 )
                 """
                 try:
