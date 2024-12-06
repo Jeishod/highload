@@ -23,3 +23,8 @@ class GetUserResponse(BaseModel):
     birth_date: date | None = Field(examples=["1990-01-21"], default=None)
     interests: list[str] | None = Field(examples=["travel", "music", "books"], default=[])
     city: str | None = Field(examples=["Moscow", "Saint-Petersburg"], default=None)
+
+
+class SearchUsersResponse(BaseModel):
+    total: int
+    users: list[GetUserResponse]
