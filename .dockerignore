@@ -13,3 +13,4 @@ poetry.lock
 .venv/
 dev/
 tests/
+postman/

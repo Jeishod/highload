@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "194e3f2b-7392-4d99-9a1a-a8ab85118973",
+		"_postman_id": "0dc75537-3fe5-40b0-9d34-854cbd43d386",
 		"name": "HIGHLOAD | Test Service",
 		"description": "Testing optimizations when working with high loads",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -29,7 +29,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"email\": \"<email>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": \"<string>\",\n  \"city\": \"<string>\"\n}",
+									"raw": "{\n  \"email\": \"<email>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": \"<string>\",\n  \"city\": \"<string>\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -48,7 +48,7 @@
 										"register"
 									]
 								},
-								"description": "Register a new user.\n\n### Input\n- **email** [Length from 5 to 100]: user email\n- **name** [Length from 2 to 100]: user name\n- **password** [Length from 6 to 50]: user password\n    Password must not contain email.\n    It must be at least 6 alphanumeric characters or following symbols: !@#$%^&*()_+\n- **gender** ['male', 'female']: user gender\n- **birth_date**: user birth date\n- **interests**: user interests\n- **city**: user city\n\n### Output\n- **id** user ID"
+								"description": "Register a new user.\n\n### Input\n- **email** [Length from 5 to 100]: user email\n- **first_name** [Length from 2 to 100]: user first name\n- **last_name** [Length from 2 to 100]: user last name\n- **password** [Length from 6 to 50]: user password\n    Password must not contain email.\n    It must be at least 6 alphanumeric characters or following symbols: !@#$%^&*()_+\n- **gender** ['male', 'female']: user gender\n- **birth_date**: user birth date\n- **interests**: user interests\n- **city**: user city\n\n### Output\n- **id** user ID"
 							},
 							"response": [
 								{
@@ -63,7 +63,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"email\": \"<email>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": \"<string>\",\n  \"city\": \"<string>\"\n}",
+											"raw": "{\n  \"email\": \"<email>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": \"<string>\",\n  \"city\": \"<string>\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -107,7 +107,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"email\": \"<email>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": \"<string>\",\n  \"city\": \"<string>\"\n}",
+											"raw": "{\n  \"email\": \"<email>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": \"<string>\",\n  \"city\": \"<string>\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -370,7 +370,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"id\": \"<uuid>\",\n  \"email\": \"<email>\",\n  \"name\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"city\": \"<string>\"\n}"
+									"body": "{\n  \"id\": \"<uuid>\",\n  \"email\": \"<email>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"city\": \"<string>\"\n}"
 								}
 							]
 						},
@@ -448,7 +448,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"id\": \"<uuid>\",\n  \"email\": \"<email>\",\n  \"name\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"city\": \"<string>\"\n}"
+									"body": "{\n  \"id\": \"<uuid>\",\n  \"email\": \"<email>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"birth_date\": \"<date>\",\n  \"interests\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"city\": \"<string>\"\n}"
 								},
 								{
 									"name": "Validation Error",
