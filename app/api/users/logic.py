@@ -14,7 +14,7 @@ class UsersManager:
     @staticmethod
     async def get_user_by_id(user_id: UUID) -> GetUserResponse:
         query = f"""
-        SELECT u.id, u.email, u.name, u.gender, u.birth_date, u.interests, u.city_id, c.name as city
+        SELECT u.id, u.email, u.first_name, u.last_name, u.gender, u.birth_date, u.interests, u.city_id, c.name as city
         FROM users u
         LEFT JOIN cities c ON u.city_id = c.id
         WHERE u.id = '{user_id}'
@@ -29,7 +29,7 @@ class UsersManager:
     @staticmethod
     async def get_user_by_email(email: EmailStr) -> GetUserResponse:
         query = f"""
-        SELECT u.id, u.email, u.name, u.gender, u.birth_date, u.interests, u.city_id, c.name as city
+        SELECT u.id, u.email, u.first_name, u.last_name, u.gender, u.birth_date, u.interests, u.city_id, c.name as city
         FROM users u
         LEFT JOIN cities c ON u.city_id = c.id
         WHERE u.email = '{email}'
