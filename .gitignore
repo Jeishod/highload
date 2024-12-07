@@ -8,3 +8,5 @@ poetry.lock
 .mypy_cache/
 .pytest_cache/
 .temp/
+dev/fixtures/*
+!dev/fixtures/README.md

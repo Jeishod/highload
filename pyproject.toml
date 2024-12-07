@@ -19,6 +19,7 @@ python-jose = "^3.3.0"
 cryptography = "^44.0.0"
 passlib = "^1.7.4"
 bcrypt = "4.0.1"
+tqdm = "^4.67.1"
 pydantic = {extras = ["email"], version = "^2.10.2"}
 python-multipart = "^0.0.17"
 itsdangerous = "^2.2.0"
@@ -92,3 +93,10 @@ script = "dev.create_tables:main()"
 [tool.poe.tasks.load-fixtures]
 # Загрузка фикстур
 script = "dev.load_fixtures:main()"
+
+[tool.poe.tasks.start-prod]
+# Запуск сервера в прод-режиме
+sequence = [
+    {ref = "create-tables"},
+    {ref = "prod"}
+]

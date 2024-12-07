@@ -45,12 +45,14 @@ services:
     build:
       context: ..
       dockerfile: .deployment/Dockerfile
-    entrypoint: ["poe", "prod"]
+    volumes: ["../dev:/app/dev"]
+    entrypoint: ["poe", "start-prod"]
     environment:
       <<: [
         *backend-envs,
         *postgres-envs,
       ]
+    ports: ["${APP_PORT:-8000}:${APP_PORT:-8000}"]
     labels:
       - traefik.enable=true
       - traefik.http.services.highload-backend.loadbalancer.server.port=${APP_PORT:-8000}
