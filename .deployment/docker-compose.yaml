@@ -22,6 +22,10 @@ x-backend-envs: &backend-envs
   APP_PUBLIC_PATH: ${APP_PUBLIC_PATH:-}
   APP_SECRET_KEY: ${APP_SECRET_KEY:-supersecret}
 
+x-gunicorn-envs: &gunicorn-envs
+  GUNICORN_WORKERS_PER_CORE: ${GUNICORN_WORKERS_PER_CORE:-1}
+  GUNICORN_MAX_WORKERS: ${GUNICORN_MAX_WORKERS:-4}
+
 x-postgres-envs: &postgres-envs
   POSTGRES_HOST: ${POSTGRES_HOST:-highload-postgres}
   POSTGRES_PORT: ${POSTGRES_PORT:-5432}
@@ -51,6 +55,7 @@ services:
       <<: [
         *backend-envs,
         *postgres-envs,
+        *gunicorn-envs,
       ]
     ports: ["${APP_PORT:-8000}:${APP_PORT:-8000}"]
     labels:
