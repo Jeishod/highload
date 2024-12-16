@@ -89,3 +89,27 @@ class PostgreSQL(BaseService):
         """
         async with self.pool.acquire() as connection:
             return await connection.fetchrow(query)
+
+    async def fetchval(self, query: str) -> int:
+        """Выполнить запрос к базе данных и получить значение результата
+
+        Args:
+            query: SQL запрос
+
+        Returns:
+            Any: значение результата выполнения запроса
+        """
+        async with self.pool.acquire() as connection:
+            return await connection.fetchval(query)
+
+    async def fetch(self, query: str) -> list[asyncpg.Record]:
+        """Выполнить запрос к базе данных и получить результат в из нескольких строк
+
+        Args:
+            query: SQL запрос
+
+        Returns:
+            list[asyncpg.Record]: результат выполнения запроса
+        """
+        async with self.pool.acquire() as connection:
+            return await connection.fetch(query)

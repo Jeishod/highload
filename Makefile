@@ -11,6 +11,13 @@ down-postgres:
 	$(call load_env)
 	@docker compose -f .deployment/docker-compose.postgres.yaml down
 
+up-traefik:
+	$(call load_env)
+	@docker compose -f .deployment/docker-compose.traefik.yaml up -d
+down-traefik:
+	$(call load_env)
+	@docker compose -f .deployment/docker-compose.traefik.yaml down
+
 up:
 	$(call load_env)
 	@docker compose -f .deployment/docker-compose.yaml up -d
