@@ -21,7 +21,7 @@ class GetUserResponse(BaseModel):
     last_name: str = Field(examples=["Doe"], min_length=2, max_length=100)
     gender: Gender | None = Field(examples=[Gender.MALE, Gender.FEMALE])
     birth_date: date | None = Field(examples=["1990-01-21"], default=None)
-    interests: list[str] | None = Field(examples=["travel", "music", "books"], default=[])
+    interests: list[str] | None = Field(examples=["travel", "music", "books"], default=None)
     city: str | None = Field(examples=["Moscow", "Saint-Petersburg"], default=None)
 
 
